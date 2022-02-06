@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<form th:method = "POST" th:action = "@{/admin/{id}(id = ${user.getId()})}" th:object = "${user}">
+    <div class="input-group input-group-lg">
+        <span class="input-group-text" id="name">Enter name</span>
+        <input type="text" th:field = "*{username}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+    </div>
+    <br/>
+    <div class="input-group input-group-lg">
+        <span class="input-group-text" id="email">Enter email</span>
+        <input type="text" th:field = "*{email}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+    </div>
+    <br/>
+</form>
+<div th:replace="fragments/logout :: logout"></div>
+</body>
+</html>

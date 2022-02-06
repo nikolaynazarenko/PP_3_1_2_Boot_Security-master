@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+<h1>ADMIN PAGE!</h1>
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col"> ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td>
+            <form th:method="post" th:action = "@{/{id}/update(id=${user.getId()})}">
+                <input type = submit value="Update"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="post" th:action="@{/delete/{id}(id=${user.getId()})}">
+                <input type = submit value="Delete"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form th:href="@{/new_user}" th:action = "@{/new_user}">
+    <input type = submit value="Create new user"/>
+</form>
+<div th:replace="fragments/logout :: logout"></div>
+</body>
+</html>
