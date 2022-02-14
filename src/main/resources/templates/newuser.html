@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8"/>
+    <title>Spring Security Example</title>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark p-0 m-0">
+    <div class="container-fluid p-0 m-0">
+        <div class="navbar-brand p-0 m-0">
+            <ul class="d-inline-block m-0">
+                <li class="navbar-brand">
+                    <a class="navbar-brand font-weight-bold" th:text="${userPrincipal.getEmail()}"></a>
+                    <a class="navbar-text font-weight-normal">with roles:</a>
+                    <a class="navbar-text" th:each="role : ${userPrincipal.getRoles()}">
+                        <a class="navbar-text" th:text="${role.getName().replace('ROLE_','')}"></a>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 p-0 mt-2">
+            <ul class="nav flex-column mt-2">
+                <li class="nav-pills nav-item p-0">
+                    <a class="nav-link active rounded-0 text-center" aria-current="page" th:href="@{/admin}">Admin</a>
+                </li>
+                <li class="nav-pills nav-item mt-3 rounded-0 text-center">
+                    <a class="nav-pills " th:href="@{/singleUser}">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 mt-3 bg-light">
+            <h3>Admin panel</h3>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link " aria-current="page" th:href="@{/admin}">Users Table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/newuser}">New User</a>
+                </li>
+            </ul>
+            <nav class="navbar-brand navbar-light bg-light ">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h5">Add new user</span>
+                </div>
+            </nav>
+            <form class="form font-weight-bold text-center col-sm-3 container"
+                  th:method="post" th:object="${userForm}" th:action="@{/admin}">
+                <div class="form-group mb-0">
+                    <label for="name" class="form-label h6">Name</label>
+                    <input th:field="*{name}" class="form-control form-control-sm" id="name">
+                    <td th:if="${#fields.hasErrors('nane')}" th:errors="name"></td>
+                </div>
+                <div class="form-group mb-0">
+                    <label for="lastName" class="form-label h6">Last Name</label>
+                    <input type="text" th:field="*{lastName}" class="form-control form-control-sm" id="lastName">
+                </div>
+                <div class="form-group mb-0">
+                    <label for="email" class="form-label h6">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control form-control-sm" id="email">
+                </div>
+                <div class="form-group mb-0">
+                    <label for="age" class="form-label h6">Age</label>
+                    <input type="text" th:field="*{age}" class="form-control form-control-sm" id="age">
+                </div>
+                <div class="form-group mb-0">
+                    <label for="password" class="form-label h6">Password</label>
+                    <input type="password" th:field="*{password}" class="form-control form-control-sm" id="password">
+                </div>
+                <div class="form-group h6">
+                    <label>Role</label>
+                    <select class="form-control form-control-sm " size="2" th:multiple="multiple"
+                            th:name="selectedRoles">
+                        <option th:value="ROLE_ADMIN">ROLE_ADMIN</option>
+                        <option th:value="ROLE_USER">ROLE_USER</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success mb-3">Подтвердить личность</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,42 +20,38 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String name;
 
+    @Column
+    private String lastName;
+
     @Column (name = "email")
     private String email;
 
     @Column (name = "pass")
+    @NonNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Column (name = "age")
+    private int age;
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id")}
             ,inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
-    public User () {
-
-    }
-
-    public User(String name, String password, Set<Role> authorities) {
-        this.name = name;
-        this.password = password;
-
-    }
-
+    public User () {}
 
     @Override
     public Collection <? extends GrantedAuthority> getAuthorities() {
-       return getRoles();
+       return this.roles;
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() {return password;}
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -77,6 +74,10 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setAge(int age) {this.age = age;}
+
+    public int getAge() {return age;}
+
     public long getId() {
         return id;
     }
@@ -97,6 +98,8 @@ public class User implements UserDetails {
         this.name = name;
     }
 
+    public String getName() {return name;}
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -109,8 +112,12 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return roles.toString();
+    public String getLastName() {
+        return lastName;
     }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8"/>
+    <title>Spring Boot Thymeleaf - Bootstrap WebJars</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark p-0 m-0">
+    <div class="container-fluid p-0 m-0">
+        <div class="navbar-brand p-0 m-0">
+            <ul class="d-inline-block m-0">
+                <li class="navbar-brand">
+                    <a class="navbar-brand font-weight-bold" th:text="${userSingle.getEmail()}"></a>
+                    <a class="navbar-text font-weight-normal">with roles:</a>
+                    <a class="navbar-text" th:each="role : ${userSingle.getRoles()}">
+                        <a class="navbar-text" th:text="${role.getName().replace('ROLE_','')}"></a>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 p-0 mt-2">
+            <ul class="nav flex-column mt-2">
+                <li class="nav-pills nav-item p-0">
+                    <a class="nav-link active rounded-0 text-center" aria-current="page" href="#">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 mt-3 bg-light">
+            <h3>User information page</h3>
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h5">About user</span>
+                </div>
+            </nav>
+            <table class="table table-hover border flex-column ">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${userSingle.id}"></td>
+                    <td th:text="${userSingle.getName()}"></td>
+                    <td th:text="${userSingle.getLastName()}"></td>
+                    <td th:text="${userSingle.getAge()}"></td>
+                    <td th:text="${userSingle.getEmail()}"></td>
+                    <td>
+                        <div class="d-inline-block" th:each="role : ${userSingle.getRoles()}">
+                            <span th:text="${role.getName().replace('ROLE_','')}"></span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
