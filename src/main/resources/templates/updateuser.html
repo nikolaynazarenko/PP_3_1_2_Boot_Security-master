@@ -6,16 +6,30 @@
 </head>
 <body>
 <form th:method = "POST" th:action = "@{/admin/{id}(id = ${user.getId()})}" th:object = "${user}">
-    <div class="input-group input-group-lg">
+    <div class="input-group">
         <span class="input-group-text" id="name">Enter name</span>
-        <input type="text" th:field = "*{username}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        <input type="text" th:field = "*{username}" class="form-control">
     </div>
     <br/>
-    <div class="input-group input-group-lg">
+    <div class="input-group">
         <span class="input-group-text" id="email">Enter email</span>
-        <input type="text" th:field = "*{email}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        <input type="text" th:field = "*{email}" class="form-control">
     </div>
     <br/>
+    <div class="input-group">
+        <span class="input-group-text" id="passworf">Enter password</span>
+        <input type="text" th:field = "*{password}" class="form-control">
+    </div>
+    <br>
+    <div class="form-group h6">
+        <label for="Roles">Example multiple select</label>
+        <select multiple class="form-control form-control-sm " size="2"
+                id="Roles" th:multiple="multiple" th:name="selectedRoles">
+            <option th:value="ROLE_ADMIN">ROLE_ADMIN</option>
+            <option th:value="ROLE_USER">ROLE_USER</option>
+        </select>
+    </div>
+    <input type = submit value="Update"/>
 </form>
 <div th:replace="fragments/logout :: logout"></div>
 </body>

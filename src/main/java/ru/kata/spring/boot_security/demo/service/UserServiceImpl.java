@@ -43,10 +43,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        if (user.getEmail().contains("admin")) {
-            user.setRoles(Set.of(roleDao.findByName("ROLE_ADMIN"),roleDao.findByName("ROLE_USER")));
-        } else
-            user.setRoles(Set.of(roleDao.findByName("ROLE_USER")));
         userDao.add(user);
     }
 
@@ -68,7 +64,7 @@ public class UserServiceImpl implements UserService {
         return userDao.findById(id);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     @Override
     public User findByName(String name) {
         return userDao.findByName(name);
@@ -79,5 +75,14 @@ public class UserServiceImpl implements UserService {
         return userDao.listUsers();
     }
 
-
+    @Transactional
+    @Override
+    public void addNewUser(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        if (user.getUsername().contains("admin")) {
+            user.setRoles(Set.of(roleDao.findByName("ROLE_ADMIN"),roleDao.findByName("ROLE_USER")));
+        } else
+            user.setRoles(Set.of(roleDao.findByName("ROLE_USER")));
+        userDao.add(user);
+    }
 }

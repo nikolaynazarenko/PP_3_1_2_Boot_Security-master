@@ -33,4 +33,11 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public Role findByName(String name) {return roleDao.findByName(name);}
+
+    @Override
+    public Role save (String name) {
+        if (roleDao.findByName(name) == null){
+            return new Role(name);
+        } return roleDao.findByName(name);
+    }
 }

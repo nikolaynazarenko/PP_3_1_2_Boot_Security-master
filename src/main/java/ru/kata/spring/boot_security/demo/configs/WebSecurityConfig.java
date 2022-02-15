@@ -46,13 +46,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/index","/new_user","/save_user").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .anyRequest().authenticated()
-                //.antMatchers("/user**").hasAnyRole("ROLE_ADMIN","ROLE_USER")
                 .and()
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
+                .logoutUrl("/j_spring_security_logout")
                 .logoutSuccessUrl("/")
                 .permitAll();
     }
