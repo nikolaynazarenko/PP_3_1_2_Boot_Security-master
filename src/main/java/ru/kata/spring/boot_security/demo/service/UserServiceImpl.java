@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
@@ -50,16 +51,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findById(long id) {
         return userDao.findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findByName(String name) {
         return userDao.findByName(name);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> listUsers() {
         return userDao.listUsers();
     }

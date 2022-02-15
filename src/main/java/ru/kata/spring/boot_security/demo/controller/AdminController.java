@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+@RequestMapping (value = "admin")
 public class AdminController {
 
     private UserService userService;
@@ -27,13 +28,12 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/admin")
+    @RequestMapping(method = RequestMethod.GET)
     public String showUsers (Principal principal, Model model) {
         List<User> users = userService.listUsers();
         model.addAttribute("users",users);
@@ -42,14 +42,26 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping  ("admin/edit/{id}")
+    @RequestMapping(method = RequestMethod.POST)
+    public String saveUser (User userForm,
+                            @RequestParam(name = "selectedRoles ",required = false) String [] selectedRoles){
+        Set <Role> roleSet = new HashSet<>();
+        for (String r : selectedRoles) {
+            roleSet.add(roleService.save(r));
+        }
+        userForm.setRoles(roleSet);
+        userService.add(userForm);
+        return "redirect: /admin";
+    }
+
+    @RequestMapping  (value = "/edit/{id}",method = RequestMethod.GET)
     public String update (@PathVariable long id, Model model){
         User user = userService.findById(id);
         model.addAttribute("user",user);
         return "admin";
     }
 
-    @PostMapping ("/admin/edit/{id}")
+    @RequestMapping (value = "/edit/{id}",method = RequestMethod.POST)
     public String updateUser (@ModelAttribute ("user") User userModal,
                               @RequestParam(name = "selectedRoles", required = false) String [] selectedRoles){
         if (selectedRoles != null) {
@@ -59,10 +71,10 @@ public class AdminController {
             userService.update(userModal);
         }
         userService.update(userModal);
-        return "redirect: /admin";
+        return "redirect:/admin";
     }
 
-    @PostMapping ("admin/delete/{id}")
+    @RequestMapping (value = "/delete/{id}",method = RequestMethod.POST)
     public String delete (@PathVariable long id){
         userService.delete(userService.findById(id));
         return "redirect: /admin";
@@ -74,16 +86,5 @@ public class AdminController {
         model.addAttribute("userForm",new User());
         model.addAttribute("userPrincipal",userPrincipal);
         return "newuser";
-    }
-
-    @PostMapping("/admin")
-    public String saveUser (User userForm, @RequestParam(name = "selectedRoles") String [] selectedRoles){
-        Set <Role> roleSet = new HashSet<>();
-        for (String r : selectedRoles) {
-            roleSet.add(roleService.save(r));
-        }
-        userForm.setRoles(roleSet);
-        userService.add(userForm);
-        return "redirect: /admin";
     }
 }

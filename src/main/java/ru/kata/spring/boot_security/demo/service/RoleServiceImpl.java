@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import java.util.Set;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService{
 
     private RoleDao roleDao;
@@ -35,13 +36,16 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role findById(long id) {
            return roleDao.findById(id);}
 
     @Override
+    @Transactional(readOnly = true)
     public Role findByName(String name) {return roleDao.findByName(name);}
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Role> listRoles() {
         return roleDao.listRoles();
     }
