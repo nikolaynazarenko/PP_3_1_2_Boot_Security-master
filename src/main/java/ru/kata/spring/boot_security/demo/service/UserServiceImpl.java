@@ -34,17 +34,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void add(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         userDao.add(user);
     }
 
     @Override
+    @Transactional
     public void delete(User user) {
         userDao.delete(user);
     }
 
     @Override
+    @Transactional
     public void update(User user) {
         userDao.update(user);
     }

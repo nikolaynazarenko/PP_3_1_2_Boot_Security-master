@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -43,12 +44,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/admin/**","/newuser/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/user/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
+                .antMatchers("/webjars/**","/js/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/rest/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST,"rest/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PUT,"rest/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE,"rest/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET,"rest/user").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/admin","/newuser").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/user").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/").usernameParameter("email").successHandler(successUserHandler)
+                .csrf()
+                .disable()
+                .formLogin().loginPage("/")
+                .usernameParameter("email").successHandler(successUserHandler)
                 .loginProcessingUrl("/perform-login")
                 .permitAll()
                 .and()

@@ -1,18 +1,16 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href= "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8"/>
-    <title>Spring Boot Thymeleaf - Bootstrap WebJars</title>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <title>Login Page</title>
 </head>
 <body>
-
 <div class="container d-flex h-100 justify-content-center">
         <div class="align-content-lg-between col-sm-3 mt-5 mb-5">
             <p class="h3 d-flex justify-content-center mt-5">Please sign in</p>
-            <form name="loginForm" th:action="@{/perform-login}" th:method="post">
+            <form name="loginForm" action="/perform-login" method="post">
                 <div class="mb-1 mt-sm-n3">
                     <label for="email" class="form-label"></label>
                     <input type="text" class="form-control" id="email" placeholder="Email" name = "email">
@@ -25,6 +23,5 @@
             </form>
         </div>
     </div>
-</div>
 </body>
 </html>
